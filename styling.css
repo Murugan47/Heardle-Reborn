@@ -31,15 +31,78 @@
   font-weight: bold;
 }
 
-.topbar .left a
-{
-  font-size: 18px;
+.left {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
   margin: 0 30px;
 }
 
+.left .abouttext {
+  visibility: hidden;
+  width: 500px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 10px;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  transform: translateX(-50%);
+}
 
-.topbar .right a
-{
-  font-size: 18px;
+.left .abouttext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.left .abouttext.show {
+  visibility: visible;
+}
+
+.right {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
   margin: 0 30px;
+}
+
+.right .tutorialtext {
+  visibility: hidden;
+  width: 500px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 10px;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  transform: translateX(-50%);
+}
+
+.right .tutorialtext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.right .tutorialtext.show {
+  visibility: visible;
 }

@@ -13,19 +13,32 @@
   </head>
 
   <body>
+
     <div class="topbar">
-      <div class="left">
-        <a href="#about"><img src="image/about.png" alt="About"></a>
+
+        <div class="left" onclick="myfunctiontwo()">
+          <img src="image/about.png" alt="About">
+          <span class="abouttext" id ="aboutpopup">
+            Tired of the only crap Heardle playing music from the stone ages.
+            Decided to recode this game in order to get more customization and playability.
+            Hopefully it works better than the original.
+          </span>
+        </div>
+
+        <div class="center">
+          <a class="active" href="https://murugan47.github.io/Heardle-Reborn/">Heardle Reborn</a>
+        </div>
+
+        <div class="right" onclick="myfunction()">
+        <img src="image/tutorial.png" alt="Tutorial">
+        <span class="tutorialtext" id="tutorialpopup">
+          Listen to the intro, then find the correct song in the list.
+          Skipping or incorrect guesses will allow you listen to more of the intro.
+          Try your best to win with the smallest number of guesses possible!
+        </span>
+
       </div>
 
-      <div class="center">
-        <a class="active" href="https://murugan47.github.io/Heardle-Reborn/">Heardle Reborn</a>
-      </div>
-
-      <div class="right">
-        <a href="#tutorial"><img src="image/tutorial.png" alt="Tutorial"></a>
-      </div>
-    </div>
 
     <script src="main.js"></script>
   </body>
