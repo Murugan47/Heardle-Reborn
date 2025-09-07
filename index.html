@@ -3,17 +3,24 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Heardle Reborn</title>
+    <meta type="description" content="game">
+
+    <!-- CSS -->
     <link href="styling.css" rel="stylesheet" type="text/css">
     <style>
       body {
         background-color: #161616;
       }
     </style>
+
+    <!-- JS -->
+    <script src="main.js"></script>
   </head>
 
-  <body>
-
+  <body onload="youtubeRequest()">
+    
     <div class="topbar">
 
         <div class="left" onclick="myfunctiontwo()">
@@ -30,15 +37,15 @@
         </div>
 
         <div class="right" onclick="myfunction()">
-        <img src="image/tutorial.png" alt="Tutorial">
-        <span class="tutorialtext" id="tutorialpopup">
-          Listen to the intro, then find the correct song in the list.
-          Skipping or incorrect guesses will allow you listen to more of the intro.
-          Try your best to win with the smallest number of guesses possible!
-        </span>
+          <img src="image/tutorial.png" alt="Tutorial">
+            <span class="tutorialtext" id="tutorialpopup">
+            Listen to the intro, then find the correct song in the list.
+            Skipping or incorrect guesses will allow you listen to more of the intro.
+            Try your best to win with the smallest number of guesses possible!
+            </span>
+        </div>
 
-      </div>
-
+      <!-- We can't use Deezer. -->
       <!--
       For Deezer API Use, add an option to filter for artists. The user should be prompted to select artists themselves.
       From these artists, assign them into an array and randomly select from that array (this allows for dynamic load).
@@ -48,7 +55,6 @@
       or dynamically check for the artists. Not sure which one is easier (Will know once coded)
 
       -->
-
-    <script src="main.js"></script>
+    </div>
   </body>
 </html>
