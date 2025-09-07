@@ -3,21 +3,40 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Generate config.js with secret
-        run: echo "window.YOUTUBE_API_KEY='${{ secrets.YOUTUBE_API_KEY }}';" > src/config.js
+        run: echo "window.YOUTUBE_API_KEY='${{ secrets.YOUTUBE_API_KEY }}';" > public/config.js
+
+      - name: Build project
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src  # adjust to your output folder
+          publish_dir: ./dist  # Change this to your build output directory
