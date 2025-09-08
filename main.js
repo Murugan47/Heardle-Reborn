@@ -22,15 +22,3 @@ function loadClient() {
 
 // Load gapi client automatically when the script runs
 gapi.load("client", loadClient);
-
-// Example function to perform a search
-function youtubeRequest(query = "Top hits 2025") {
-    gapi.client.youtube.search.list({
-        part: "snippet",
-        q: query,
-        maxResults: 5,
-        type: "video"
-    }).then(response => {
-        console.log("Search results:", response.result.items);
-    }).catch(err => console.error("YouTube API request failed", err));
-}
