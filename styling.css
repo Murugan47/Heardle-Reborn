@@ -106,3 +106,54 @@
 .right .tutorialtext.show {
   visibility: visible;
 }
+
+.center {
+  text-align: center;
+}
+
+.searchbar {
+  margin: 0 auto;
+  position: relative;
+  left: 365px;
+  top: 610px;
+  width: 850px;
+  height: 50px;
+  font-size: 25px;
+  padding: 7px;
+  border-width: 1px;
+  border-color: white;
+  background-color: black;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.button {
+  position: relative;
+  width: 150px;
+  height: 68px;
+  border-width: 1px;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.guessbutton {
+  left: 215px;
+  top: 700px;
+  border-color: rgb(0, 52, 71); 
+  background-color: rgb(72, 139, 150)
+}
+
+.skipbutton {
+  right: 650px;
+  top: 700px;
+  border-color: rgba(18, 18, 17, 1); 
+  background-color: rgba(82, 79, 76, 1)
+}
+
+.horizontalline {
+  position: relative;
+  top: 590px;
+  color: rgba(82, 79, 76, 1)
+}
