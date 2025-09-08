@@ -17,17 +17,16 @@
 
     <!-- JS -->
     <!-- Load the API key from config.js first -->
-    <script src="config.js"></script>
-
-    <!-- Then load your main game logic -->
+    <!-- <script src="config.js"></script> -->
+    <script src="https://apis.google.com/js/api.js"></script>
     <script src="main.js"></script>
   </head>
 
-  <body onload="youtubeRequest()">
+  <body>
     
+    <!-- Header of the Webpage -->
     <div class="topbar">
-
-        <div class="left" onclick="myfunctiontwo()">
+        <div class="left" onclick="aboutPopUp()">
           <img src="image/about.png" alt="About">
           <span class="abouttext" id ="aboutpopup">
             Tired of the only crap Heardle playing music from the stone ages.
@@ -40,7 +39,7 @@
           <a class="active" href="https://murugan47.github.io/Heardle-Reborn/">Heardle Reborn</a>
         </div>
 
-        <div class="right" onclick="myfunction()">
+        <div class="right" onclick="tutorialPopUp()">
           <img src="image/tutorial.png" alt="Tutorial">
             <span class="tutorialtext" id="tutorialpopup">
             Listen to the intro, then find the correct song in the list.
@@ -48,17 +47,18 @@
             Try your best to win with the smallest number of guesses possible!
             </span>
         </div>
-
-      <!-- We can't use Deezer. -->
-      <!--
-      For Deezer API Use, add an option to filter for artists. The user should be prompted to select artists themselves.
-      From these artists, assign them into an array and randomly select from that array (this allows for dynamic load).
-      Once an artist is chosen retrieve top songs (100 songs max) and from there randomly select one song from that list
-
-      ### CONCERN ###, Only concern is that either I have to make a list of artists ahead of time for filtering
-      or dynamically check for the artists. Not sure which one is easier (Will know once coded)
-
-      -->
     </div>
+
+    <!-- API Key Submission Form -->
+    <div id="apidiv" onsubmit="apiKeyReceived()">
+      <br><br><br><br> <!-- Stuff like this is temporary -->
+      <h4 style="color:white">Provide a YouTube API key:</h4>
+
+      <form>
+        <input type="text" id="apiask">
+        <input type="Submit" value="Submit">
+      </form>
+    </div>
+
   </body>
 </html>

@@ -1,18 +1,20 @@
-// Toggle tutorial popup
-function myfunction() {
+var api_key = null;
+
+// The Tutorial pop-up
+function tutorialPopUp() {
     var popup = document.getElementById("tutorialpopup");
     popup.classList.toggle("show");
 }
 
-// Toggle about popup
-function myfunctiontwo() {
+// The About pop-up
+function aboutPopUp() {
     var popup = document.getElementById("aboutpopup");
     popup.classList.toggle("show");
 }
 
-// Load the YouTube API client
+// Loads the YouTube API
 function loadClient() {
-    gapi.client.setApiKey(window.YOUTUBE_API_KEY); // use the key from config.js
+    gapi.client.setApiKey(api_key);
     return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
         .then(
             function() { console.log("GAPI client loaded for API"); },
@@ -20,10 +22,10 @@ function loadClient() {
         );
 }
 
-// Load gapi client automatically when the script runs
+// Load GAPI automatically when the script runs
 gapi.load("client", loadClient);
 
-// Example function to perform a search
+// Performs a search with the YouTube API
 function youtubeRequest(query = "Top hits 2025") {
     gapi.client.youtube.search.list({
         part: "snippet",
@@ -33,4 +35,13 @@ function youtubeRequest(query = "Top hits 2025") {
     }).then(response => {
         console.log("Search results:", response.result.items);
     }).catch(err => console.error("YouTube API request failed", err));
+}
+
+// Gets API Key provided by user
+function apiKeyReceived() {
+    api_key = document.getElementById("apiask").value;
+    document.getElementById("apidiv").remove();
+
+    loadClient();
+    youtubeRequest();
 }
