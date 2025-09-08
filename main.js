@@ -21,7 +21,8 @@ function roundStart() {
     var random_song = id_list[Math.floor(Math.random() * random_song_multiplier)];
 
     var body = document.getElementById("webpagebody");
-    body.innerHTML += `<div class=\"playerdiv\"><iframe style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?autoplay=1"></iframe></div>`;
+    //style="display:none"
+    body.innerHTML += `<div class=\"playerdiv\"><iframe width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?autoplay=1"></iframe></div>`;
     body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input class=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"submit\" value=\"Guess\"><input class=\"button skipbutton\" type=\"submit\" value=\"Skip\"></form></div>";
 }
 
