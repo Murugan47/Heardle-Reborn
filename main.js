@@ -21,8 +21,7 @@ function roundStart() {
     var random_song = id_list[Math.floor(Math.random() * random_song_multiplier)];
 
     var body = document.getElementById("webpagebody");
-    //style="display:none"
-    body.innerHTML += `<div class=\"playerdiv\"><iframe width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?autoplay=1"></iframe></div>`;
+    body.innerHTML += `<div class=\"playerdiv\"><iframe style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?autoplay=1"></iframe></div>`;
     body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input class=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"submit\" value=\"Guess\"><input class=\"button skipbutton\" type=\"submit\" value=\"Skip\"></form></div>";
 }
 
@@ -54,7 +53,7 @@ function youtubeRequest() {
                 var id_index = 0;
                 var search_index = 0;
                 var substring_beginning_offset = 1
-                var substring_end_offset = 3
+                var substring_end_offset = 2
                 var length = response.body.length
                 var record_flag = false;
                 var search_flag = false;
