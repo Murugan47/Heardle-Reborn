@@ -2,6 +2,7 @@ var api_key = null;
 var id_list = [];
 var search_list = [];
 var video_size = 500;
+var currently_playing = false;
 
 // The Tutorial pop-up
 function tutorialPopUp() {
@@ -21,8 +22,15 @@ function roundStart() {
     var random_song = id_list[Math.floor(Math.random() * random_song_multiplier)];
 
     var body = document.getElementById("webpagebody");
-    body.innerHTML += `<div class=\"playerdiv\"><iframe style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?autoplay=1"></iframe></div>`;
+
+    //YouTube player is embedded
+    body.innerHTML += `<div class=\"playerdiv\"><iframe id="player" style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?enablejsapi=1"></iframe></div>`;
+
+    //Search bar, skip button, guess button and horizontal bar is added
     body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input class=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"submit\" value=\"Guess\"><input class=\"button skipbutton\" type=\"submit\" value=\"Skip\"></form></div>";
+
+    //Play button is added
+    body.innerHTML += "<div class=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
 }
 
 // Loads the YouTube API
@@ -117,4 +125,21 @@ function apiKeyReceived() {
 
     loadClient();
     youtubeRequest();
+}
+
+// Controls playback of music
+function playback() {
+    var player = document.getElementById("player");
+    console.log(player);
+
+    if(currently_playing == false)
+    {
+        player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        currently_playing = true;
+    }
+    else
+    {   
+        player.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+        currently_playing = false;
+    }
 }
