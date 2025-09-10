@@ -31,6 +31,12 @@ function roundStart() {
 
     //Play button is added
     body.innerHTML += "<div class=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
+
+    //Attempts table is added
+    body.innerHTML += "<div class=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row row1\"></td></tr><tr><td class=\"row row2\"></td></tr><tr><td class=\"row row3\"></td></tr><tr><td class=\"row row4\"></td></tr><tr><td class=\"row row5\"></td></tr><tr><td class=\"row row6\"></td></tr></table></div>"
+
+    //Progress bar is added
+    body.innerHTML += "<div class=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar bar1\"></th><th><td class=\"bar bar2\"></th><th><td class=\"bar bar3\"></th><th><td class=\"bar bar4\"></th><th><td class=\"bar bar5\"></th><th><td class=\"bar bar6\"></th></table></div>"
 }
 
 // Loads the YouTube API

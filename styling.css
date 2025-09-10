@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid rgb(112, 112, 112);
   background-color: transparent;
   display: flex;
   align-items: center;
@@ -21,7 +21,7 @@
 .topbar a
 {
   text-decoration: none;
-  color: white;
+  color: rgb(255, 255, 255);
   display: inline-block;
 }
 
@@ -113,7 +113,7 @@
 
 .searchbar {
   position: fixed;
-  top: 75%;
+  top: 78%;
   left: 19.75%;
   display: flex;
   align-items: center;
@@ -134,7 +134,7 @@
   width: 150px;
   height: 68px;
   border-width: 1px;
-  color: white;
+  color: rgb(240, 240, 240);
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 25px;
   font-weight: bold;
@@ -142,31 +142,64 @@
 
 .guessbutton {
   right: 19.45%;
-  top: 85%;
+  top: 88%;
   border-color: rgb(0, 52, 71); 
   background-color: rgb(72, 139, 150);
 }
 
 .skipbutton {
   left: 19.5%;
-  top: 85%;
+  top: 88%;
   border-color: rgba(18, 18, 17, 1); 
   background-color: rgba(82, 79, 76, 1);
 }
 
 .horizontalline {
-  position: fixed;
-  top: 35%;
-  color: rgba(82, 79, 76, 1);
+  margin-top: 30.5%;
+  color: rgb(58, 56, 53);
 }
 
 .playbutton {
   position: fixed;
   left: 47.5%;
-  top: 60%;
+  top: 66%;
   width: 5%;
   height: 10%;
   border-radius: 50%;
-  color: rgba(82, 79, 76, 1);
+}
+
+th, td {
+  border: 10px #262626;
+}
+
+.attemptstable {
+  position: fixed;
+  border: 10px #262626;
+  left: 22.5%;
+  top: 14%;
+  width: 55%;
+  height: 42%;
+}
+
+.bartable {
+  position: fixed;
+  left: 22.25%;
+  top: 60.5%;
+  width: 55%;
+  height: 3.5%;
+}
+
+.row {
+  padding: 12px;
   border-color: white;
+  background-color: #262626;
+  color: white;
+  font-size: 22px;
+}
+
+.bar {
+  width: 16%;
+  border-color: white;
+  background-color: #262626;
+  color: white;
 }
