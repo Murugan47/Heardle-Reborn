@@ -183,14 +183,17 @@ th, td {
 
 .bartable {
   position: fixed;
-  left: 22.25%;
+  left: 22.375%;
   top: 60.5%;
   width: 55%;
   height: 3.5%;
 }
 
 .row {
-  padding: 12px;
+  height: 4%;
+  padding-left: 16px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   border-color: white;
   background-color: #262626;
   color: white;
@@ -202,4 +205,28 @@ th, td {
   border-color: white;
   background-color: #262626;
   color: white;
+}
+
+#bar1 {
+  width: 2%;
+}
+
+#bar2 {
+  width: 4%;
+}
+
+#bar3 {
+  width: 8%;
+}
+
+#bar4 {
+  width: 16%;
+}
+
+#bar5 {
+  width: 32%;
+}
+
+#bar6 {
+  width: 64%;
 }

@@ -3,6 +3,8 @@ var id_list = [];
 var search_list = [];
 var video_size = 500;
 var currently_playing = false;
+var current_row = 1;
+var max_guesses = 6;
 
 // The Tutorial pop-up
 function tutorialPopUp() {
@@ -27,16 +29,16 @@ function roundStart() {
     body.innerHTML += `<div class=\"playerdiv\"><iframe id="player" style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?enablejsapi=1"></iframe></div>`;
 
     //Search bar, skip button, guess button and horizontal bar is added
-    body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input class=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"submit\" value=\"Guess\"><input class=\"button skipbutton\" type=\"submit\" value=\"Skip\"></form></div>";
+    body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input class=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
 
     //Play button is added
     body.innerHTML += "<div class=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
 
     //Attempts table is added
-    body.innerHTML += "<div class=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row row1\"></td></tr><tr><td class=\"row row2\"></td></tr><tr><td class=\"row row3\"></td></tr><tr><td class=\"row row4\"></td></tr><tr><td class=\"row row5\"></td></tr><tr><td class=\"row row6\"></td></tr></table></div>"
+    body.innerHTML += "<div class=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row\" id=\"row1\"></td></tr><tr><td class=\"row\" id=\"row2\"></td></tr><tr><td class=\"row\" id=\"row3\"></td></tr><tr><td class=\"row\" id=\"row4\"></td></tr><tr><td class=\"row\" id=\"row5\"></td></tr><tr><td class=\"row\" id=\"row6\"></td></tr></table></div>"
 
     //Progress bar is added
-    body.innerHTML += "<div class=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar bar1\"></th><th><td class=\"bar bar2\"></th><th><td class=\"bar bar3\"></th><th><td class=\"bar bar4\"></th><th><td class=\"bar bar5\"></th><th><td class=\"bar bar6\"></th></table></div>"
+    body.innerHTML += "<div class=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th><th><td class=\"bar\" id=\"bar2\"></th><th><td class=\"bar\" id=\"bar3\"></th><th><td class=\"bar\" id=\"bar4\"></th><th><td class=\"bar\" id=\"bar5\"></th><th><td class=\"bar\" id=\"bar6\"></th></table></div>"
 }
 
 // Loads the YouTube API
@@ -147,5 +149,33 @@ function playback() {
     {   
         player.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
         currently_playing = false;
+    }
+}
+
+// Guess button functionality
+function guessing() {
+    if(current_row < max_guesses)
+    {
+        row = document.getElementById("row" + current_row);
+        row.innerHTML = "&#10060  guess " + current_row;
+        current_row++;
+    }
+    else
+    {
+        console.log("fail unless you won");
+    }
+}
+
+//Skip button functionality
+function skipping() {
+    if(current_row < max_guesses)
+    {
+        row = document.getElementById("row" + current_row);
+        row.innerHTML = "Skipped";
+        current_row++;
+    }
+    else
+    {
+        console.log("fail unless you won");
     }
 }
