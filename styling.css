@@ -111,7 +111,7 @@
   text-align: center;
 }
 
-.searchbar {
+#searchbar {
   position: fixed;
   top: 78%;
   left: 19.75%;
@@ -208,25 +208,26 @@ th, td {
 }
 
 #bar1 {
-  width: 2%;
+  background-color: rgb(112, 138, 143);
+  width: 12%;
 }
 
 #bar2 {
-  width: 4%;
+  width: 12%;
 }
 
 #bar3 {
-  width: 8%;
+  width: 12%;
 }
 
 #bar4 {
-  width: 16%;
+  width: 12%;
 }
 
 #bar5 {
-  width: 32%;
+  width: 24%;
 }
 
 #bar6 {
-  width: 64%;
+  width: 24%;
 }
