@@ -1,12 +1,25 @@
-var api_key = null;
 var id_list = [];
 var search_list = [];
 var video_size = 500;
-var currently_playing = false;
-var current_row = 1;
 var max_guesses = 6;
+var mid_playing_length = 5;
+var small_play_increase = 2;
+var large_play_increase = 4;
+var max_results = 50;
+var wait_time = 1000; //Temporary
+var api_key = null;
 var random_song_index = null;
 var random_song = null;
+
+//Variables reset every new round
+var current_row = 1;
+var currently_playing = false;
+var playing_length = 2;
+
+//Original values of reset variables
+var original_row = current_row;
+var original_playing = currently_playing;
+var original_length = playing_length;
 
 // The Tutorial pop-up
 function tutorialPopUp() {
@@ -29,19 +42,36 @@ function roundStart() {
     var body = document.getElementById("webpagebody");
 
     //YouTube player is embedded
-    body.innerHTML += `<div class=\"playerdiv\"><iframe id="player" style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?enablejsapi=1"></iframe></div>`;
+    body.innerHTML += `<div id=\"playerdiv\"><iframe id="player" style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?end=` + playing_length + `&enablejsapi=1"></iframe></div>`;
 
     //Search bar, skip button, guess button and horizontal bar is added
-    body.innerHTML += "<div class=\"searchdiv\"><hr class=\"horizontalline\"><form><input id=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
+    body.innerHTML += "<div id=\"searchdiv\"><hr class=\"horizontalline\"><form onsubmit=\"return false\"><input id=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
 
     //Play button is added
-    body.innerHTML += "<div class=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
+    body.innerHTML += "<div id=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
 
     //Attempts table is added
-    body.innerHTML += "<div class=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row\" id=\"row1\"></td></tr><tr><td class=\"row\" id=\"row2\"></td></tr><tr><td class=\"row\" id=\"row3\"></td></tr><tr><td class=\"row\" id=\"row4\"></td></tr><tr><td class=\"row\" id=\"row5\"></td></tr><tr><td class=\"row\" id=\"row6\"></td></tr></table></div>"
+    body.innerHTML += "<div id=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row\" id=\"row1\"></td></tr><tr><td class=\"row\" id=\"row2\"></td></tr><tr><td class=\"row\" id=\"row3\"></td></tr><tr><td class=\"row\" id=\"row4\"></td></tr><tr><td class=\"row\" id=\"row5\"></td></tr><tr><td class=\"row\" id=\"row6\"></td></tr></table></div>"
 
     //Progress bar is added
-    body.innerHTML += "<div class=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th><th><td class=\"bar\" id=\"bar2\"></th><th><td class=\"bar\" id=\"bar3\"></th><th><td class=\"bar\" id=\"bar4\"></th><th><td class=\"bar\" id=\"bar5\"></th><th><td class=\"bar\" id=\"bar6\"></th></table></div>"
+    body.innerHTML += "<div id=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th><th><td class=\"bar\" id=\"bar2\"></th><th><td class=\"bar\" id=\"bar3\"></th><th><td class=\"bar\" id=\"bar4\"></th><th><td class=\"bar\" id=\"bar5\"></th><th><td class=\"bar\" id=\"bar6\"></th></table></div>"
+}
+
+function roundEnd() {
+    //Remove previous round
+    document.getElementById("playerdiv").remove();
+    document.getElementById("searchdiv").remove();
+    document.getElementById("playbuttondiv").remove();
+    document.getElementById("tablediv").remove();
+    document.getElementById("progressbardiv").remove();
+
+    //Reset variables
+    current_row = original_length;
+    currently_playing = original_playing;
+    playing_length = original_playing;
+
+    //Should show the end screen, but temporarily restarts for now
+    roundStart();
 }
 
 // Loads the YouTube API
@@ -63,7 +93,7 @@ function youtubeRequest() {
       "part": [
         "snippet"
       ],
-      "maxResults": 50,
+      "maxResults": max_results,
       "playlistId": "PLZxfqz84iPB64kfJE36mGBcrCF4nQRkX7"
     })
         .then(function(response) {
@@ -168,6 +198,9 @@ function guessing() {
         {
             row = document.getElementById("row" + current_row);
             row.innerHTML = "&#10003 " + user_entered_guess;
+
+            //Ends game
+            setTimeout(roundEnd, wait_time);
         }
         else if(user_entered_guess != "") //Incorrect guess
         {
@@ -178,13 +211,25 @@ function guessing() {
             //Resets search bar
             document.getElementById("searchbar").value = "";
 
+            //Adds to video playtime
+            if(current_row < mid_playing_length)
+            {
+                playing_length += small_play_increase;
+            }
+            else
+            {
+                playing_length += large_play_increase;
+            }
+            currently_playing = false;
+
             //Adds progress to the progress bar
-            //WIP
+            document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
         }
     }
     else
     {
-        console.log("fail unless you won");
+        //Ends game
+        roundEnd();
     }
 }
 
@@ -195,9 +240,24 @@ function skipping() {
         row = document.getElementById("row" + current_row);
         row.innerHTML = "Skipped";
         current_row++;
+
+        //Adds to video playtime
+        if(current_row < mid_playing_length)
+        {
+            playing_length += small_play_increase;
+        }
+        else
+        {
+            playing_length += large_play_increase;
+        }
+        currently_playing = false;
+
+        //Adds progress to the progress bar
+        document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
     }
     else
     {
-        console.log("fail unless you won");
+        //Ends game
+        roundEnd();
     }
 }
