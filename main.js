@@ -5,6 +5,9 @@ var max_guesses = 6;
 var mid_playing_length = 5;
 var small_play_increase = 2;
 var large_play_increase = 4;
+var time_decrease = 0.1;
+var time_multiplier = 1000;
+var time_end = 0;
 var max_results = 50;
 var wait_time = 1000; //Temporary
 var api_key = null;
@@ -14,12 +17,14 @@ var random_song = null;
 //Variables reset every new round
 var current_row = 1;
 var currently_playing = false;
-var playing_length = 2;
+var playing_length = 16;
+var time_left = 16;
 
 //Original values of reset variables
 var original_row = current_row;
 var original_playing = currently_playing;
 var original_length = playing_length;
+var original_time_left = time_left;
 
 // The Tutorial pop-up
 function tutorialPopUp() {
@@ -69,6 +74,7 @@ function roundEnd() {
     current_row = original_length;
     currently_playing = original_playing;
     playing_length = original_playing;
+    time_left = original_time_left;
 
     //Should show the end screen, but temporarily restarts for now
     roundStart();
@@ -170,19 +176,41 @@ function apiKeyReceived() {
     youtubeRequest();
 }
 
+// Waiting out some time, this function is currently broken because setTimeout only runs once
+function delay() {
+    setTimeout(function() {
+        ;
+    }, time_decrease * time_multiplier);
+}
+
+// 16 second timer for music
+function playbackCap() {
+    while(currently_playing == true && time_left > time_end)
+    {
+        delay();
+        time_left -= time_decrease;
+    }
+
+    if(time_left <= time_end)
+    {
+        time_left = original_row;
+    }
+    currently_playing = original_playing;
+}
+
 // Controls playback of music
 function playback() {
     var player = document.getElementById("player");
-    console.log(player);
 
     if(currently_playing == false)
     {
         player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         currently_playing = true;
+        playbackCap();
     }
     else
     {   
-        player.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+        player.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         currently_playing = false;
     }
 }
@@ -212,7 +240,7 @@ function guessing() {
             document.getElementById("searchbar").value = "";
 
             //Adds to video playtime
-            if(current_row < mid_playing_length)
+            /*if(current_row < mid_playing_length)
             {
                 playing_length += small_play_increase;
             }
@@ -220,10 +248,10 @@ function guessing() {
             {
                 playing_length += large_play_increase;
             }
-            currently_playing = false;
+            currently_playing = false;*/
 
             //Adds progress to the progress bar
-            document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
+            //document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
         }
     }
     else
@@ -242,7 +270,7 @@ function skipping() {
         current_row++;
 
         //Adds to video playtime
-        if(current_row < mid_playing_length)
+        /*if(current_row < mid_playing_length)
         {
             playing_length += small_play_increase;
         }
@@ -250,10 +278,10 @@ function skipping() {
         {
             playing_length += large_play_increase;
         }
-        currently_playing = false;
+        currently_playing = false;*/
 
         //Adds progress to the progress bar
-        document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
+        //document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
     }
     else
     {
