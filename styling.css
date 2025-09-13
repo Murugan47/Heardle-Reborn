@@ -161,10 +161,13 @@
 
 .playbutton {
   position: fixed;
+  background-color: rgb(60, 60, 60);
+  border-color: #fff;
   left: 47.5%;
   top: 66%;
   width: 5%;
   height: 10%;
+  border-width: 2%;
   border-radius: 50%;
 }
 
@@ -207,12 +210,17 @@ th, td {
   color: white;
 }
 
+/* Old bar1
 #bar1 {
   background-color: rgb(112, 138, 143);
   width: 12%;
+}*/
+
+#bar1 {
+  width: 100%;
 }
 
-#bar2 {
+/*#bar2 {
   width: 12%;
 }
 
@@ -230,4 +238,18 @@ th, td {
 
 #bar6 {
   width: 24%;
+}*/
+
+#playicon {
+  height: 50%;
+  width: 65%;
+}
+
+#endmsg {
+  position: fixed;
+  top: 9.5%;
+  left: 34%;
+  font-size: 25px;
+  text-align: center;
+  color: lightcoral;
 }

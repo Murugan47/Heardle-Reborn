@@ -5,9 +5,10 @@ var max_guesses = 6;
 var mid_playing_length = 5;
 var small_play_increase = 2;
 var large_play_increase = 4;
-var time_decrease = 0.1;
+var time_decrease = 0.125;
 var time_multiplier = 1000;
 var time_end = 0;
+var play_button_load = 1500;
 var max_results = 50;
 var wait_time = 1000; //Temporary
 var api_key = null;
@@ -52,14 +53,19 @@ function roundStart() {
     //Search bar, skip button, guess button and horizontal bar is added
     body.innerHTML += "<div id=\"searchdiv\"><hr class=\"horizontalline\"><form onsubmit=\"return false\"><input id=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
 
-    //Play button is added
-    body.innerHTML += "<div id=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"></button></div>";
-
     //Attempts table is added
     body.innerHTML += "<div id=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row\" id=\"row1\"></td></tr><tr><td class=\"row\" id=\"row2\"></td></tr><tr><td class=\"row\" id=\"row3\"></td></tr><tr><td class=\"row\" id=\"row4\"></td></tr><tr><td class=\"row\" id=\"row5\"></td></tr><tr><td class=\"row\" id=\"row6\"></td></tr></table></div>"
 
+    //Old progress bar
+    //body.innerHTML += "<div id=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th><th><td class=\"bar\" id=\"bar2\"></th><th><td class=\"bar\" id=\"bar3\"></th><th><td class=\"bar\" id=\"bar4\"></th><th><td class=\"bar\" id=\"bar5\"></th><th><td class=\"bar\" id=\"bar6\"></th></table></div>"
+
     //Progress bar is added
-    body.innerHTML += "<div id=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th><th><td class=\"bar\" id=\"bar2\"></th><th><td class=\"bar\" id=\"bar3\"></th><th><td class=\"bar\" id=\"bar4\"></th><th><td class=\"bar\" id=\"bar5\"></th><th><td class=\"bar\" id=\"bar6\"></th></table></div>"
+    body.innerHTML += "<div id=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th></table></div>"
+
+    setTimeout(function() {}, play_button_load);
+
+    //Play button is added
+    body.innerHTML += "<div id=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"><img id=\"playicon\" src=\"image/playbutton.png\"></button></div>";
 }
 
 function roundEnd() {
@@ -69,11 +75,16 @@ function roundEnd() {
     document.getElementById("playbuttondiv").remove();
     document.getElementById("tablediv").remove();
     document.getElementById("progressbardiv").remove();
+    endmsg = document.getElementById("endmsg")
+    if(endmsg != null)
+    {
+        endmsg.remove();
+    }
 
     //Reset variables
-    current_row = original_length;
+    current_row = original_row;
     currently_playing = original_playing;
-    playing_length = original_playing;
+    playing_length = original_length;
     time_left = original_time_left;
 
     //Should show the end screen, but temporarily restarts for now
@@ -177,25 +188,30 @@ function apiKeyReceived() {
 }
 
 // Waiting out some time, this function is currently broken because setTimeout only runs once
-function delay() {
-    setTimeout(function() {
+/*function delay() {
+    setInterval(function() {
         ;
     }, time_decrease * time_multiplier);
-}
+}*/
 
 // 16 second timer for music
 function playbackCap() {
-    while(currently_playing == true && time_left > time_end)
-    {
-        delay();
-        time_left -= time_decrease;
-    }
+    setTimeout(function() { 
+        if(currently_playing == true && time_left > time_end)
+        {
+            time_left -= time_decrease;
+            playbackCap();
+        }
+    }, time_decrease * time_multiplier);
 
     if(time_left <= time_end)
     {
-        time_left = original_row;
+        time_left = original_time_left;
+        currently_playing = original_playing;
+
+        //Change the button image
+        document.getElementById("playicon").src = "image/playbutton.png"
     }
-    currently_playing = original_playing;
 }
 
 // Controls playback of music
@@ -207,17 +223,23 @@ function playback() {
         player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         currently_playing = true;
         playbackCap();
+
+        //Change the button image
+        document.getElementById("playicon").src = "image/pausebutton.png";
     }
     else
     {   
         player.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         currently_playing = false;
+
+        //Change the button image
+        document.getElementById("playicon").src = "image/playbutton.png"
     }
 }
 
 // Guess button functionality
 function guessing() {
-    if(current_row < max_guesses)
+    if(current_row <= max_guesses)
     {
         var user_entered_guess = document.getElementById("searchbar").value;
 
@@ -229,9 +251,18 @@ function guessing() {
 
             //Ends game
             setTimeout(roundEnd, wait_time);
+            //document.getElementById("webpagebody").innerHTML += "<div id=\"endmsg\">You won!</div>";
         }
         else if(user_entered_guess != "") //Incorrect guess
         {
+            //Ends game
+            if(current_row == max_guesses)
+            {
+                console.log("guess end");
+                setTimeout(roundEnd, wait_time);
+                document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
+            }
+
             row = document.getElementById("row" + current_row);
             row.innerHTML = "&#10060 " + user_entered_guess;
             current_row++;
@@ -257,14 +288,22 @@ function guessing() {
     else
     {
         //Ends game
-        roundEnd();
+        setTimeout(roundEnd, wait_time);
+        document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
     }
 }
 
 //Skip button functionality
 function skipping() {
-    if(current_row < max_guesses)
+    if(current_row <= max_guesses)
     {
+        //Ends game
+        if(current_row == max_guesses)
+        {
+            setTimeout(roundEnd, wait_time);
+            document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
+        }
+
         row = document.getElementById("row" + current_row);
         row.innerHTML = "Skipped";
         current_row++;
@@ -286,6 +325,7 @@ function skipping() {
     else
     {
         //Ends game
-        roundEnd();
+        setTimeout(roundEnd, wait_time);
+        document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
     }
 }
