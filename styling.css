@@ -155,7 +155,8 @@
 }
 
 .horizontalline {
-  margin-top: 30.5%;
+  position: fixed;
+  width: 100%;
   color: rgb(58, 56, 53);
 }
 
@@ -247,9 +248,17 @@ th, td {
 
 #endmsg {
   position: fixed;
+  width: 100%;
   top: 9.5%;
-  left: 34%;
   font-size: 25px;
   text-align: center;
   color: lightcoral;
+}
+
+#innerprogressbardiv {
+  position: fixed;
+  left: 22.75%;
+  top: 61%;
+  height: 2.5%;
+  background-color: rgb(107, 131, 132);
 }

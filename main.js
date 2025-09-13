@@ -8,12 +8,15 @@ var large_play_increase = 4;
 var time_decrease = 0.125;
 var time_multiplier = 1000;
 var time_end = 0;
-var play_button_load = 1500;
+var play_button_load = 1000;
 var max_results = 50;
-var wait_time = 1000; //Temporary
+var wait_time = 1000;
+var bar_multiplier = 54.9;
 var api_key = null;
 var random_song_index = null;
 var random_song = null;
+var buffer_period = false;
+var searched_for_string = " - "
 
 //Variables reset every new round
 var current_row = 1;
@@ -39,6 +42,18 @@ function aboutPopUp() {
     popup.classList.toggle("show");
 }
 
+//Adds the play button
+function addPlayButton() {
+    //Checks if another play button exists already first
+    button_exists = document.getElementById("playbuttondiv")
+    if(button_exists == null)
+    {
+        document.getElementById("webpagebody").innerHTML += "<div id=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"><img id=\"playicon\" src=\"image/playbutton.png\"></button></div>";
+    }
+
+    buffer_period = false;
+}
+
 // Starts a round of the game
 function roundStart() {
     var random_song_multiplier = id_list.length;
@@ -62,23 +77,28 @@ function roundStart() {
     //Progress bar is added
     body.innerHTML += "<div id=\"progressbardiv\"><table class=\"bartable\"><th><td class=\"bar\" id=\"bar1\"></th></table></div>"
 
-    setTimeout(function() {}, play_button_load);
+    //Inner progress bar is added
+    body.innerHTML += "<div id=\"innerprogressbardiv\" style=\"\"></div>";
 
-    //Play button is added
-    body.innerHTML += "<div id=\"playbuttondiv\"><button class=\"playbutton\" onclick=\"playback()\"><img id=\"playicon\" src=\"image/playbutton.png\"></button></div>";
+    setTimeout(addPlayButton, play_button_load);
 }
 
 function roundEnd() {
     //Remove previous round
     document.getElementById("playerdiv").remove();
     document.getElementById("searchdiv").remove();
-    document.getElementById("playbuttondiv").remove();
     document.getElementById("tablediv").remove();
     document.getElementById("progressbardiv").remove();
+    document.getElementById("innerprogressbardiv").remove();
     endmsg = document.getElementById("endmsg")
     if(endmsg != null)
     {
         endmsg.remove();
+    }
+    playbutton = document.getElementById("playbuttondiv")
+    if(playbutton != null)
+    {
+        playbutton.remove();
     }
 
     //Reset variables
@@ -127,6 +147,8 @@ function youtubeRequest() {
                 var current_char = "";
                 var name_beginning_offset = 0;
                 var name_end_offset = 0;
+                var extra_text_offset = 3;
+                var not_found = -1
 
                 while(loop_counter < length)
                 {
@@ -140,7 +162,16 @@ function youtubeRequest() {
                         }
                         else if(search_flag == true) //Put the video name in the names array
                         {
-                            search_list[search_index] = current_string.substring(name_beginning_offset, current_string.length - name_end_offset);
+                            extra_text_search = current_string.search(searched_for_string);
+                            if(extra_text_search != not_found)
+                            {
+                                search_list[search_index] = current_string.substring(extra_text_search + extra_text_offset, current_string.length - name_end_offset);
+                            }
+                            else
+                            {
+                                search_list[search_index] = current_string.substring(name_beginning_offset, current_string.length - name_end_offset);
+                            }
+
                             search_index++;
                         }
 
@@ -196,9 +227,12 @@ function apiKeyReceived() {
 
 // 16 second timer for music
 function playbackCap() {
+    inner_bar = document.getElementById("innerprogressbardiv");
+
     setTimeout(function() { 
         if(currently_playing == true && time_left > time_end)
         {
+            inner_bar.style["width"] = (original_time_left - time_left) / original_time_left * bar_multiplier + "%";
             time_left -= time_decrease;
             playbackCap();
         }
@@ -246,6 +280,8 @@ function guessing() {
         //If you won
         if(search_list[random_song_index].toLowerCase() == user_entered_guess.toLowerCase())
         {
+            buffer_period = true;
+
             row = document.getElementById("row" + current_row);
             row.innerHTML = "&#10003 " + user_entered_guess;
 
@@ -285,8 +321,10 @@ function guessing() {
             //document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
         }
     }
-    else
+    else if(buffer_period == false)
     {
+        buffer_period = true;
+
         //Ends game
         setTimeout(roundEnd, wait_time);
         document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
@@ -322,8 +360,10 @@ function skipping() {
         //Adds progress to the progress bar
         //document.getElementById("bar" + current_row).style["background-color"] = "rgb(112, 138, 143)";
     }
-    else
+    else if(buffer_period == false)
     {
+        buffer_period = true;
+
         //Ends game
         setTimeout(roundEnd, wait_time);
         document.getElementById("webpagebody").innerHTML += '<div id=\"endmsg\">You lost! The answer was ' + search_list[random_song_index] + '</div>';
