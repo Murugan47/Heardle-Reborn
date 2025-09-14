@@ -156,8 +156,10 @@
 
 .horizontalline {
   position: fixed;
+  top: 59%;
   width: 100%;
-  color: rgb(58, 56, 53);
+  height: 0.15%;
+  background-color: rgb(58, 56, 53);
 }
 
 .playbutton {

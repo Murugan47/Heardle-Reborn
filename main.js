@@ -66,7 +66,7 @@ function roundStart() {
     body.innerHTML += `<div id=\"playerdiv\"><iframe id="player" style="display:none" width=` + video_size + ` height=` + video_size + ` src=\"https://www.youtube.com/embed/` + random_song + `?end=` + playing_length + `&enablejsapi=1"></iframe></div>`;
 
     //Search bar, skip button, guess button and horizontal bar is added
-    body.innerHTML += "<div id=\"searchdiv\"><hr class=\"horizontalline\"><form onsubmit=\"return false\"><input id=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
+    body.innerHTML += "<div id=\"searchdiv\"><div class=\"horizontalline\"></div><form onsubmit=\"return false\"><input id=\"searchbar\" type=\"text\"><input class=\"button guessbutton\" type=\"button\" value=\"Guess\" onclick=\"guessing()\"><input class=\"button skipbutton\" type=\"button\" value=\"Skip\" onclick=\"skipping()\"></form></div>";
 
     //Attempts table is added
     body.innerHTML += "<div id=\"tablediv\"><table class=\"attemptstable\"><tr><td class=\"row\" id=\"row1\"></td></tr><tr><td class=\"row\" id=\"row2\"></td></tr><tr><td class=\"row\" id=\"row3\"></td></tr><tr><td class=\"row\" id=\"row4\"></td></tr><tr><td class=\"row\" id=\"row5\"></td></tr><tr><td class=\"row\" id=\"row6\"></td></tr></table></div>"
